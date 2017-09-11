@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Edit a Dog</title>
+</head>
+
+<body>
+    <a href="/" style="font-size:26px">See all Dogs</a>
+    <h2>Change data in the form to edit.</h2>
+    <form action="/dogs/<%= dog._id %>" method="post">
+        <label for="name" style="font-size:20px;font-weight:bold">Name</label>
+        <input type="text" name="name" value="<%= dog.name %>" style="font-size:20px"><br><br>
+        <label for="age" style="font-size:20px;font-weight:bold">Age</label>
+        <input type="text" name="age" value="<%= dog.age %>" style="font-size:20px"><br><br>
+        <input type="submit" value="Edit DOG" style="color:bisque;background-color:blue;font-size:26px">
+    </form>
+</body>
+
+</html>

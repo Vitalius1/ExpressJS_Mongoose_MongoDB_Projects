@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>All Dogs</title>
+</head>
+<body>
+    <a href="/dogs/new" style="font-size:26px">Add a new Dog</a>
+    <h1>Here are all my dogs:</h1>
+    <ul>
+        <% for(var x in dogs){ %>
+            <li><a href="/dogs/<%= dogs[x]._id %>"><%= dogs[x].name %></a><span> age: <%= dogs[x].age %> years.</span></li>
+        <% } %>
+    </ul>
+</body>
+</html>

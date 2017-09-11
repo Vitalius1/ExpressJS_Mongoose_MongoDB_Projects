@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Add a DOG</title>
+</head>
+
+<body>
+    <a href="/" style="font-size:26px">See all Dogs</a>
+    <h2>Fill in the form to add another DOG</h2>
+    <% if(typeof(errors) != 'undefined'){ %>
+        <% for(var x in errors){ %>
+            <h4 style="color:red"><%= errors[x] %></h4>
+        <% } %>
+    <% } %>
+    <form action="/dogs" method="post">
+        <label for="name" style="font-size:20px;font-weight:bold">Name</label>
+        <input type="text" name="name" style="font-size:20px"><br><br>
+        <label for="age" style="font-size:20px;font-weight:bold">Age</label>
+        <input type="text" name="age" style="font-size:20px"><br><br>
+        <input type="submit" value="Add DOG" style="color:bisque;background-color:blue;font-size:26px">
+    </form>
+</body>
+
+</html>
