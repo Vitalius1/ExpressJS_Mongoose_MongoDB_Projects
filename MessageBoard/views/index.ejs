@@ -12,11 +12,10 @@
     <h1>The Dojo Message Board</h1>
     <hr>
     <div style="width:80%;margin:0 auto">
-        <% if(typeof(errors) != 'undefined'){ %>
-            <% for(var x in errors){ %>
-                <h4 style="color:red"><%= errors[x] %></h4>
-            <% } %>
+        <% if(typeof(Merrors) != 'undefined'){ %>
+            <h4 style="color:red"><%= Merrors %></h4>
         <% } %>
+        
         <form action="/post_message" method="post">
             <p>Name:</p>
             <input type="text" name="msgCreator"><br>
@@ -34,6 +33,10 @@
                     <p>Name: <%= posts[i].comments[j].comCreator %></p>
                     <p>Comment: <%= posts[i].comments[j].comment %></p>
                     <br>
+                <% } %>
+
+                <% if(typeof(Cerrors) != 'undefined'){ %>
+                    <h4 style="color:red"><%= Cerrors %></h4>
                 <% } %>
                 <form action="/post_comment/<%= posts[i]._id %>" method="post">
                     <p>Name:</p>

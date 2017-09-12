@@ -1,5 +1,7 @@
 var express = require('express');
+var session = require('express-session');
 var app = express();
+app.use(session({ secret: 'codingdojorocks' }));  // string for encryption
 var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));
 var path = require('path');
@@ -60,7 +62,8 @@ app.get('/', function (req, res) {
         .lean()
         .populate('comments')
         .exec(function (err, posts) {
-            res.render('index', { posts: posts });
+            res.render('index', { posts: posts, Merrors: req.session.Merror, Cerrors: req.session.Cerror });
+
         });
     // res.render("index");
 });
@@ -70,7 +73,9 @@ app.post('/post_message', function (req, res) {
     post.save(function (err) {
         if (err) {
             console.log('something went wrong');
-            res.render("index", { errors: post.errors });
+            req.session.Merror = "Fields can not be empty";
+            console.log(req.session.Merror);
+            res.redirect("/");
         } else {
             console.log('successfully added a post!');
             res.redirect('/');
@@ -84,10 +89,15 @@ app.post('/post_comment/:id', function (req, res) {
         comment._post = post._id;
         post.comments.push(comment);
         comment.save(function (err) {
-            post.save(function (err) {
-                if (err) { console.log('Error'); }
-                else { res.redirect('/'); }
-            });
+            if(err){
+                req.session.Cerror = "Fields can not be empty";
+                res.redirect("/");
+            } else {
+                post.save(function (err) {
+                    if (err) { console.log('Error'); }
+                    else { res.redirect('/'); }
+                });
+            }
         });
     });
 });
