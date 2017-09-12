@@ -14,7 +14,7 @@ var validate = require('mongoose-validator');
 var nameValidator = [
     validate({
         validator: 'isLength',
-        arguments: [3, 50],
+        arguments: [4, 50],
         message: 'Name should be between {ARGS[0]} and {ARGS[1]} characters'
     }),
     validate({
@@ -32,14 +32,16 @@ var Schema = mongoose.Schema;
 
 // define Post Schema
 var PostSchema = new mongoose.Schema({
-    text: { type: String, required: true },
+    msgCreator: { type: String, required: true, validate: nameValidator },
+    message: { type: String, required: true },
     comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }]
 }, { timestamps: true });
 
 // define Comment Schema
 var CommentSchema = new mongoose.Schema({
     _post: { type: Schema.Types.ObjectId, ref: 'Post' },
-    text: { type: String, required: true }
+    comCreator: { type: String, required: true, validate: nameValidator },
+    comment: { type: String, required: true },
 }, { timestamps: true });
 
 // set our models by passing them their respective Schemas
@@ -54,64 +56,41 @@ var Comment = mongoose.model('Comment');
 // Routes
 // Root Request
 app.get('/', function (req, res) {
-    res.render("index");
+    Post.find()
+        .lean()
+        .populate('comments')
+        .exec(function (err, posts) {
+            res.render('index', { posts: posts });
+        });
+    // res.render("index");
 });
 
-// app.post('/dogs', function (req, res) {
-//     var dog = new Dog({ name: req.body.name, age: req.body.age });
-//     dog.save(function (err) {
-//         if (err) {
-//             console.log('something went wrong');
-//             res.render("addnew", { errors: dog.errors });
-//         } else {
-//             console.log('successfully added a dog!');
-//             res.redirect('/');
-//         }
-//     });
-// });
+app.post('/post_message', function (req, res) {
+    var post = new Post(req.body);
+    post.save(function (err) {
+        if (err) {
+            console.log('something went wrong');
+            res.render("index", { errors: post.errors });
+        } else {
+            console.log('successfully added a post!');
+            res.redirect('/');
+        }
+    });
+});
 
-// app.post('/dogs/:id', function (req, res) {
-//     console.log(req.body.name);
-//     Dog.findByIdAndUpdate(req.params.id, { name: req.body.name, age: req.body.age }, function (err) {
-//         if (err) {
-//             console.log('something went wrong');
-//         } else {
-//             console.log('successfully updated a dog!');
-//             res.redirect('/');
-//         }
-//     });
-// });
-
-
-// app.get('/dogs/:id', function (req, res) {
-//     Dog.findById(req.params.id, function (err, dog) {
-//         if (err) {
-//             console.log(err);
-//         } else {
-//             res.render("onedog", { dog: dog });
-//         }
-//     });
-// });
-
-// app.get('/dogs/edit/:id', function (req, res) {
-//     Dog.findById(req.params.id, function (err, dog) {
-//         if (err) {
-//             console.log(err);
-//         } else {
-//             res.render("edit", { dog: dog });
-//         }
-//     });
-// });
-
-// app.get('/dogs/destroy/:id', function (req, res) {
-//     Dog.findByIdAndRemove(req.params.id, function (err, dog) {
-//         if (err) {
-//             console.log(err);
-//         } else {
-//             res.redirect("/");
-//         }
-//     });
-// });
+app.post('/post_comment/:id', function (req, res) {
+    Post.findById(req.params.id, function (err, post) {
+        var comment = new Comment(req.body);
+        comment._post = post._id;
+        post.comments.push(comment);
+        comment.save(function (err) {
+            post.save(function (err) {
+                if (err) { console.log('Error'); }
+                else { res.redirect('/'); }
+            });
+        });
+    });
+});
 
 
 // Setting our Server to Listen on Port: 8000

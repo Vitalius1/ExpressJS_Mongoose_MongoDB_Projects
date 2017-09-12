@@ -12,13 +12,38 @@
     <h1>The Dojo Message Board</h1>
     <hr>
     <div style="width:80%;margin:0 auto">
-        <form action="/post_comment" method="post">
+        <% if(typeof(errors) != 'undefined'){ %>
+            <% for(var x in errors){ %>
+                <h4 style="color:red"><%= errors[x] %></h4>
+            <% } %>
+        <% } %>
+        <form action="/post_message" method="post">
             <p>Name:</p>
             <input type="text" name="msgCreator"><br>
             <p>Message:</p>
             <textarea name="message" style="width:100%" rows="5"></textarea><br>
             <input type="submit" value="Post Message" style="float:right">
         </form>
+        <br>
+        <hr>
+        <% for(var i in posts){ %>
+            <h3>Name: <%= posts[i].msgCreator %></h3>
+            <h3>Message: <%= posts[i].message %></h3>
+            <div style="width:80%;margin:0 auto">
+                <% for(var j in posts[i].comments){ %>
+                    <p>Name: <%= posts[i].comments[j].comCreator %></p>
+                    <p>Comment: <%= posts[i].comments[j].comment %></p>
+                    <br>
+                <% } %>
+                <form action="/post_comment/<%= posts[i]._id %>" method="post">
+                    <p>Name:</p>
+                    <input type="text" name="comCreator"><br>
+                    <p>Comment:</p>
+                    <textarea name="comment" style="width:100%" rows="5"></textarea><br>
+                    <input type="submit" value="Post Comment" style="float:right">
+                </form>
+            </div>
+        <% } %>
     </div>
 </body>
 
