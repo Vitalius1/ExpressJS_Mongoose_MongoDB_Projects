@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Message Board</title>
+</head>
+
+<body>
+    <h1>The Dojo Message Board</h1>
+    <hr>
+    <div style="width:80%;margin:0 auto">
+        <form action="/post_comment" method="post">
+            <p>Name:</p>
+            <input type="text" name="msgCreator"><br>
+            <p>Message:</p>
+            <textarea name="message" style="width:100%" rows="5"></textarea><br>
+            <input type="submit" value="Post Message" style="float:right">
+        </form>
+    </div>
+</body>
+
+</html>
