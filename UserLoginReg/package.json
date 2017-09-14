@@ -1,0 +1,15 @@
+{
+  "name": "UserLoginReg",
+  "dependencies": {
+    "bcrypt-as-promised": "^1.1.0",
+    "body-parser": "^1.18.1",
+    "ejs": "^2.5.7",
+    "express": "^4.15.4",
+    "express-flash": "0.0.2",
+    "express-session": "^1.15.5",
+    "mongoose": "^4.11.11",
+    "mongoose-validator": "^1.3.2",
+    "morgan": "^1.8.2",
+    "validator": "^8.2.0"
+  }
+}
